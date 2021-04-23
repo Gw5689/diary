@@ -32,8 +32,12 @@ public class AddMemberController extends HttpServlet {
 		member.setMemberId(memberId);
 		member.setMemberPw(memberPw);
 		
-		int returnMember = this.memberService.addMemberByKey(member);
-		
+		boolean checkId = this.memberService.checkMemberIdAndAddMember(member);
+		if(checkId == false) {
+			response.sendRedirect(request.getContextPath()+"/addMember");
+			return;
+		}
+		System.out.println("회원가입 성공!");
 		response.sendRedirect(request.getContextPath()+"/login");
 	}
 

@@ -15,6 +15,6 @@
 		</div>
 		<button type="submit">변경</button>
 	</form>
-	<a href="${pageContext.request.contextPath}/login">돌아가기</a>
+	<a href="${pageContext.request.contextPath}/login"><button type="button">돌아가기</button></a>
 </body>
 </html>

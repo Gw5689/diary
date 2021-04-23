@@ -74,7 +74,7 @@ public class MemberService {
 		return returnMember;
 	}
 	
-	// 회원가입 메소드
+	/* 회원가입 메소드
 	public int addMemberByKey(Member member) {
 		this.dbUtil = new DBUtil();
 		this.memberDao = new MemberDao();
@@ -97,7 +97,7 @@ public class MemberService {
 		}
 		return returnMember;
 	}
-	
+	*/
 	
 	//삭제 성공하면 true , 삭제실패(롤백)하면 false
 	public boolean removeMemberByKey(Member member) {
@@ -130,7 +130,7 @@ public class MemberService {
 	}
 	
 	
-	//
+	// 로그인 메소드
 	public Member getMemberByKey(Member member) {
 		// 생성
 		this.dbUtil = new DBUtil();
