@@ -11,6 +11,47 @@ import gdu.diary.vo.Member;
 public class MemberDao {
 	private DBUtil dbUtil;
 	
+	public String checkMemberId(Connection conn, Member member) throws SQLException {
+		this.dbUtil = new DBUtil();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String checkMemberId = null;
+		
+		try {
+			stmt = conn.prepareStatement(MemberQuery.CHECK_MEMEBER_ID);
+			stmt.setString(1, member.getMemberId());
+			//디버깅
+			System.out.println(stmt+"<-- MemberDao checkMemberId stmt");
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				checkMemberId = rs.getString("memberId");
+			}
+			
+		} finally {
+			this.dbUtil.close(null, stmt, rs);
+		}
+		return checkMemberId;
+	}
+	
+	public int updateMemberByKey(Connection conn, Member member) throws SQLException {
+		this.dbUtil = new DBUtil();
+		// 초기화
+		int rowCnt = 0;
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement(MemberQuery.UPDATE_MEMBER_BY_KEY);
+			stmt.setString(1, member.getMemberPw());
+			stmt.setString(2, member.getMemberId());
+			// 디버깅
+			System.out.println(stmt+"<-- MemberDao updateMemberByKey stmt");
+			rowCnt = stmt.executeUpdate();
+		} finally {
+			this.dbUtil.close(null, stmt, null);
+		}
+		return rowCnt;
+	}
+	
 	public int insertMemberByKey(Connection conn, Member member) throws SQLException {
 		this.dbUtil = new DBUtil();
 		// 초기화

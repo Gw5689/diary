@@ -19,6 +19,62 @@ public class MemberService {
 	// update 대신 modify
 	// delete 대신 remove
 	
+	// ID 중복검사 메소드
+	public boolean checkMemberIdAndAddMember(Member member) {
+		this.dbUtil = new DBUtil();
+		this.memberDao = new MemberDao();
+		Connection conn = null;
+		boolean checkId = false;
+
+		try {
+			conn = this.dbUtil.getConnection();
+			if(this.memberDao.checkMemberId(conn, member) != null){// 중복된 아이디가 존재, 생성불가
+				System.out.println("이미 존재하는 ID 입니다.");
+				checkId = false;
+			} else { // 중복된 아이디가 없음, 생성 가능
+				this.memberDao.insertMemberByKey(conn, member);
+				checkId = true;
+			}
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+			checkId = false;
+		} finally {
+			this.dbUtil.close(conn, null, null);
+		}
+		return checkId;
+	}
+	
+	// 회원정보 수정 메소드
+	public int modifyMemberByKey(Member member) {
+		this.dbUtil = new DBUtil();
+		this.memberDao = new MemberDao();
+		// 초기화
+		Connection conn = null;
+		int returnMember = 0;
+		try {
+			conn = this.dbUtil.getConnection();
+			returnMember = this.memberDao.updateMemberByKey(conn, member);
+			conn.commit();
+		} catch (SQLException e){
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			this.dbUtil.close(conn, null, null);
+		}
+		return returnMember;
+	}
+	
+	// 회원가입 메소드
 	public int addMemberByKey(Member member) {
 		this.dbUtil = new DBUtil();
 		this.memberDao = new MemberDao();
