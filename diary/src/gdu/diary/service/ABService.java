@@ -34,7 +34,12 @@ public class ABService {
 			}
 			e.printStackTrace();
 		} finally {
-			this.dbUtil.close(conn, null, null);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

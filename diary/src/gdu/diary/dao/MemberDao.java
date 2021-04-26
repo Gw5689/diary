@@ -9,10 +9,8 @@ import gdu.diary.util.DBUtil;
 import gdu.diary.vo.Member;
 
 public class MemberDao {
-	private DBUtil dbUtil;
-	
+
 	public String checkMemberId(Connection conn, Member member) throws SQLException {
-		this.dbUtil = new DBUtil();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String checkMemberId = null;
@@ -28,13 +26,14 @@ public class MemberDao {
 			}
 			
 		} finally {
-			this.dbUtil.close(null, stmt, rs);
+			stmt.close();
+			rs.close();
 		}
 		return checkMemberId;
 	}
 	
 	public int updateMemberByKey(Connection conn, Member member) throws SQLException {
-		this.dbUtil = new DBUtil();
+		
 		// 초기화
 		int rowCnt = 0;
 		PreparedStatement stmt = null;
@@ -47,13 +46,12 @@ public class MemberDao {
 			System.out.println(stmt+"<-- MemberDao updateMemberByKey stmt");
 			rowCnt = stmt.executeUpdate();
 		} finally {
-			this.dbUtil.close(null, stmt, null);
+			stmt.close();
 		}
 		return rowCnt;
 	}
 	
 	public int insertMemberByKey(Connection conn, Member member) throws SQLException {
-		this.dbUtil = new DBUtil();
 		// 초기화
 		int rowCnt = 0;
 		PreparedStatement stmt = null;
@@ -66,13 +64,12 @@ public class MemberDao {
 			System.out.println(stmt+"<-- MemberDao insertMemberByKey stmt");
 			rowCnt = stmt.executeUpdate();
 		} finally {
-			this.dbUtil.close(null, stmt, null);
+			stmt.close();
 		}
 		return rowCnt;
 	}
 	
 	public int deleteMemberByKey(Connection conn, Member member) throws SQLException {
-		this.dbUtil = new DBUtil();
 		//초기화
 		int rowCnt = 0;
 		PreparedStatement stmt = null;
@@ -84,13 +81,12 @@ public class MemberDao {
 			System.out.println(stmt+"<-- Member deleteMemberByKey stmt");
 			rowCnt = stmt.executeUpdate();
 		} finally {
-			this.dbUtil.close(null, stmt, null); // conn은 메소드를 호출하는 곳에서 close를 해야함
+			stmt.close();
 		}
 		
 		return rowCnt;
 	}
 	public Member selectMemberByKey(Connection conn, Member member) throws SQLException {
-		this.dbUtil = new DBUtil();
 		//초기화
 		Member returnMember = null;
 		PreparedStatement stmt = null;
@@ -109,7 +105,8 @@ public class MemberDao {
 				returnMember.setMemberId(rs.getString("memberId"));
 			}
 		} finally {
-			this.dbUtil.close(null, stmt, rs);
+			stmt.close();
+			rs.close();
 		}
 		
 		return returnMember;

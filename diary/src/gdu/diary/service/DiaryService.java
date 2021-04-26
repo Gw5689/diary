@@ -1,11 +1,20 @@
 package gdu.diary.service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import gdu.diary.dao.TodoDao;
+import gdu.diary.util.DBUtil;
+import gdu.diary.vo.Todo;
+
 public class DiaryService {
-	public Map<String, Object> getDiary(String targetYear, String targetMonth) {
+	private TodoDao todoDao;
+	private DBUtil dbUtil;
+	public Map<String, Object> getDiary(int memberNo ,String targetYear, String targetMonth) {
 		// 타겟 년,월,일 (타겟이 없다면 오늘날짜)
 		// 타겟의 1일 (날짜)
 		// 타겟의 말일 -> endDay
@@ -19,15 +28,17 @@ public class DiaryService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		Calendar target = Calendar.getInstance();
 		
-		/*
+		
 		if(targetYear != null) {
 			target.set(Calendar.YEAR, Integer.parseInt(targetYear));
 		}
 		if(targetMonth != null) {
 			target.set(Calendar.MONTH, Integer.parseInt(targetMonth));
 		}
-		*/
+		target.set(Calendar.DATE,1);
 		
+		
+		/*
 		int numTargetMonth = 0;
 		int numTargetYear = 0;
 		if(targetMonth != null && targetYear != null ) {
@@ -42,11 +53,11 @@ public class DiaryService {
 			}
 			
 			target.set(Calendar.YEAR, numTargetYear);
-			target.set(Calendar.MONTH, numTargetMonth-1);
+			target.set(Calendar.MONTH, numTargetMonth);
 		}
 		
-		
-		target.set(Calendar.DATE,1);
+			target.set(Calendar.DATE,1);
+		*/
 		
 		// 1일 앞의 공백의 갯수
 		int startBlank = target.get(Calendar.DAY_OF_WEEK)-1 ;
@@ -67,8 +78,33 @@ public class DiaryService {
 		map.put("endDay", endDay);
 		map.put("endBlank", endBlank);
 		map.put("targetYear", target.get(Calendar.YEAR));
-		map.put("targetMonth", target.get(Calendar.MONTH)+1);
+		map.put("targetMonth", target.get(Calendar.MONTH));
 		//map.put("totalCell", totalCell);
+		
+		// 2. todo 목록 가져와서 추가하기 
+		this.dbUtil = new DBUtil();
+		this.todoDao = new TodoDao();
+		List<Todo> todoList = null;
+		Connection conn = null;
+		try {
+			conn = this.dbUtil.getConnection();
+			todoList = this.todoDao.selectTodoListByDate(conn, memberNo, target.get(Calendar.YEAR), target.get(Calendar.MONTH)+1);
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		map.put("todoList", todoList);
 		
 		return map;
 		

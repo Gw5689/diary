@@ -18,30 +18,4 @@ public class DBUtil {
 		// finally를 넣지 않는 이유는 리턴을 해줘야 하는데 close를 하면 사용할 수 없다. close는 호출한 곳에서 close를 해야한다.
 		return conn;
 	}
-	
-	public void close(Connection conn, PreparedStatement stmt, ResultSet rs) {
-		// 생성된 역순으로 해제
-			if(rs != null) {
-				try {
-					rs.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			
-			if(stmt != null) {
-				try {
-					stmt.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			if(conn != null) {
-				try {
-					conn.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 }
