@@ -93,7 +93,7 @@ public class TodoDao {
 			stmt.setInt(3, targetMonth);
 			rs = stmt.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				Todo todo = new Todo();
 				todo.setTodoNo(rs.getInt("todoNo"));
 				todo.setTodoDate(rs.getString("todoDate"));
