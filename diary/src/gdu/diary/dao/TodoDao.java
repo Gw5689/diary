@@ -5,11 +5,46 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import gdu.diary.vo.Todo;
 
 public class TodoDao {
+	
+	//dday 출력
+	public List<Map<String, Object>> selectTodoDdayList(Connection conn, int memberNo) throws SQLException {
+		// 초기화
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = conn.prepareStatement(TodoQuery.SELECT_TODO_DDAY_LIST);
+			stmt.setInt(1, memberNo);
+			// 디버깅
+			System.out.println(stmt+"<-- TodoDao selectTodoDdayList stmt");
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Map<String, Object> map = new HashMap<String, Object>(); // HashMap 앞에 타입이 있기 때문에 생략가능 
+				map.put("todoNo", rs.getInt("todoNo"));
+				map.put("todoDate", rs.getString("todoDate"));
+				map.put("todoTitle", rs.getString("todoTitle"));
+				map.put("dday", rs.getInt("dday"));
+				list.add(map);
+			}
+		} finally {
+			if(rs != null) {
+			rs.close();
+			}
+			stmt.close();
+		}
+		// list 리턴
+		return list;
+	}
+	
 	
 	// 일정 수정
 	public int updateTodo(Connection conn, Todo todo) throws SQLException {
