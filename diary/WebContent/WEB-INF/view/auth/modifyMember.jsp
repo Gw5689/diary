@@ -4,17 +4,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+  <!-- loader-->
+  <link href="${pageContext.request.contextPath}/assets/css/pace.min.css" rel="stylesheet"/>
+  <script src="${pageContext.request.contextPath}/assets/js/pace.min.js"></script>
+  <!--favicon-->
+  <link rel="icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico" type="image/x-icon">
+  <!-- simplebar CSS-->
+  <link href="${pageContext.request.contextPath}/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet"/>
+  <!-- Bootstrap core CSS-->
+  <link href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- animate CSS-->
+  <link href="${pageContext.request.contextPath}/assets/css/animate.css" rel="stylesheet" type="text/css"/>
+  <!-- Icons CSS-->
+  <link href="${pageContext.request.contextPath}/assets/css/icons.css" rel="stylesheet" type="text/css"/>
+  <!-- Sidebar CSS-->
+  <link href="${pageContext.request.contextPath}/assets/css/sidebar-menu.css" rel="stylesheet"/>
+  <!-- Custom Style-->
+  <link href="${pageContext.request.contextPath}/assets/css/app-style.css" rel="stylesheet"/>
 <title>modifyMember</title>
 </head>
-<body>
-	<h1>비밀번호 수정</h1>
-	
-	<form action="${pageContext.request.contextPath}/auth/modifyMember" method="post">
-		<div>
-			새 비밀번호 : <input type="password" name="memberPw" required="required">
-		</div>
-		<button type="submit">변경</button>
-	</form>
-	<a href="${pageContext.request.contextPath}/login"><button type="button">돌아가기</button></a>
+<body class="bg-theme bg-theme1  pace-done">
+	<div class="card-body">
+		<h3 class="card-title">회원정보 수정</h3>
+		<div class="card-content p-2">
+			<form action="${pageContext.request.contextPath}/auth/modifyMember" method="post">
+				<div class="form-group">
+					새 비밀번호 : <input type="password" name="memberPw" required="required" class="form-control input-shadow"> <button type="submit" class="btn btn-light px-4">변경</button>
+				</div>
+			</form>
+			
+			<div class="form-group">
+				<a href="${pageContext.request.contextPath}/login"><button type="button" class="btn btn-light px-4">돌아가기</button></a>
+			</div>
 </body>
 </html>
